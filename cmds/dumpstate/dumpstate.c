@@ -339,17 +339,28 @@ static void dumpstate() {
     if (timeout < logcat_min_timeout) {
         timeout = logcat_min_timeout;
     }
-    run_command("SYSTEM LOG", timeout / 1000, "logcat", "-v", "threadtime", "-d", "*:v", NULL);
+    run_command("SYSTEM LOG", timeout / 1000, "logcat", "-v", "threadtime",
+                                                        "-v", "printable",
+                                                        "-d",
+                                                        "*:v", NULL);
     timeout = logcat_timeout("events");
     if (timeout < logcat_min_timeout) {
         timeout = logcat_min_timeout;
     }
-    run_command("EVENT LOG", timeout / 1000, "logcat", "-b", "events", "-v", "threadtime", "-d", "*:v", NULL);
+    run_command("EVENT LOG", timeout / 1000, "logcat", "-b", "events",
+                                                       "-v", "threadtime",
+                                                       "-v", "printable",
+                                                       "-d",
+                                                       "*:v", NULL);
     timeout = logcat_timeout("radio");
     if (timeout < logcat_min_timeout) {
         timeout = logcat_min_timeout;
     }
-    run_command("RADIO LOG", timeout / 1000, "logcat", "-b", "radio", "-v", "threadtime", "-d", "*:v", NULL);
+    run_command("RADIO LOG", timeout / 1000, "logcat", "-b", "radio",
+                                                       "-v", "threadtime",
+                                                       "-v", "printable",
+                                                       "-d",
+                                                       "*:v", NULL);
 
     run_command("LOG STATISTICS", 10, "logcat", "-b", "all", "-S", NULL);
     // raft disabled as per http://b/24159112
@@ -423,8 +434,12 @@ static void dumpstate() {
     }
 
     /* kernels must set CONFIG_PSTORE_PMSG, slice up pstore with device tree */
-    run_command("LAST LOGCAT", 10, "logcat", "-L", "-v", "threadtime",
-                                             "-b", "all", "-d", "*:v", NULL);
+    run_command("LAST LOGCAT", 10, "logcat", "-L",
+                                             "-b", "all",
+                                             "-v", "threadtime",
+                                             "-v", "printable",
+                                             "-d",
+                                             "*:v", NULL);
 
     /* The following have a tendency to get wedged when wifi drivers/fw goes belly-up. */
 
